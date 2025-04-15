@@ -1,0 +1,302 @@
+basePath: /api/v1
+definitions:
+  youGo_internal_api_request.CreateUserRequest:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        minLength: 8
+        type: string
+    required:
+    - email
+    - name
+    - password
+    type: object
+  youGo_internal_api_request.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        description: 'Example: require password, min 8 chars'
+        minLength: 8
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  youGo_internal_api_request.UpdateUserRequest:
+    properties:
+      isActive:
+        type: boolean
+      name:
+        type: string
+      role:
+        type: string
+    type: object
+  youGo_internal_api_response.ErrorResponse:
+    properties:
+      details:
+        description: 'Optional: Detailed error info (e.g., validation failures)'
+      message:
+        description: User-friendly error message
+        type: string
+      status:
+        description: Typically "error" or "fail" (for validation)
+        type: string
+    type: object
+  youGo_internal_api_response.LoginResponse:
+    properties:
+      access_token:
+        description: Tokens for accessing protected resources
+        type: string
+      refresh_token:
+        description: Refresh token might be handled differently (e.g., httpOnly cookie)
+          or omitted sometimes
+        type: string
+      token_type:
+        description: Typically "Bearer"
+        type: string
+      user:
+        allOf:
+        - $ref: '#/definitions/youGo_internal_api_response.UserResponse'
+        description: Optionally embed the full UserResponse DTO
+    type: object
+  youGo_internal_api_response.SuccessResponse:
+    properties:
+      data:
+        description: Holds the actual response DTO (e.g., UserResponse, LoginResponse)
+      status:
+        description: Typically "success"
+        type: string
+    type: object
+  youGo_internal_api_response.UserResponse:
+    properties:
+      createdAt:
+        type: string
+      email:
+        type: string
+      id:
+        description: String for JSON compatibility
+        type: string
+      isActive:
+        type: boolean
+      name:
+        type: string
+      role:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0
+  termsOfService: http://swagger.io/terms/
+  title: youGo
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticates a user and returns access/refresh tokens.
+      parameters:
+      - description: Login credentials
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/youGo_internal_api_request.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'Login successful, tokens provided" // Corrected: Matches code
+            returning wrapped response.LoginResponse'
+          schema:
+            allOf:
+            - $ref: '#/definitions/youGo_internal_api_response.SuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/youGo_internal_api_response.LoginResponse'
+              type: object
+        "400":
+          description: 'Invalid input data (validation error)" // Note: Code returns
+            422 for validation'
+          schema:
+            $ref: '#/definitions/youGo_internal_api_response.ErrorResponse'
+        "401":
+          description: Invalid credentials
+          schema:
+            $ref: '#/definitions/youGo_internal_api_response.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/youGo_internal_api_response.ErrorResponse'
+      summary: Log in a user
+      tags:
+      - Auth
+  /auth/signup:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new user account.
+      parameters:
+      - description: User Registration Details
+        in: body
+        name: register
+        required: true
+        schema:
+          $ref: '#/definitions/youGo_internal_api_request.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: 'User registered successfully" // Correct: Matches code returning
+            wrapped response.UserResponse (assuming registerResp is compatible)'
+          schema:
+            allOf:
+            - $ref: '#/definitions/youGo_internal_api_response.SuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/youGo_internal_api_response.UserResponse'
+              type: object
+        "400":
+          description: Invalid input data (validation error)
+          schema:
+            $ref: '#/definitions/youGo_internal_api_response.ErrorResponse'
+        "409":
+          description: User with this email already exists
+          schema:
+            $ref: '#/definitions/youGo_internal_api_response.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/youGo_internal_api_response.ErrorResponse'
+      summary: Register a new user
+      tags:
+      - Auth
+  /users:
+    post:
+      consumes:
+      - application/json
+      description: Adds a new user to the system. Typically used by administrators.
+      parameters:
+      - description: User details for creation
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/youGo_internal_api_request.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: 'User created successfully"       // UPDATED: Reference response
+            DTO'
+          schema:
+            $ref: '#/definitions/youGo_internal_api_response.UserResponse'
+        "400":
+          description: 'Invalid input data"             // UPDATED: Reference response
+            DTO'
+          schema:
+            $ref: '#/definitions/youGo_internal_api_response.ErrorResponse'
+        "409":
+          description: 'User conflict (e.g., email exists)" // UPDATED: Reference
+            response DTO'
+          schema:
+            $ref: '#/definitions/youGo_internal_api_response.ErrorResponse'
+        "500":
+          description: 'Internal server error"          // UPDATED: Reference response
+            DTO'
+          schema:
+            $ref: '#/definitions/youGo_internal_api_response.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a new user
+      tags:
+      - Users
+  /users/{id}:
+    get:
+      description: Retrieves details for a specific user by their ID.
+      parameters:
+      - description: User ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'User details found"      // Corrected: domain. prefix'
+          schema:
+            $ref: '#/definitions/youGo_internal_api_response.UserResponse'
+        "400":
+          description: 'Invalid User ID format" // Corrected: domain. prefix'
+          schema:
+            $ref: '#/definitions/youGo_internal_api_response.ErrorResponse'
+        "404":
+          description: 'User not found"         // Corrected: domain. prefix'
+          schema:
+            $ref: '#/definitions/youGo_internal_api_response.ErrorResponse'
+        "500":
+          description: 'Internal server error"  // Corrected: domain. prefix'
+          schema:
+            $ref: '#/definitions/youGo_internal_api_response.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get a user by ID
+      tags:
+      - Users
+    put:
+      consumes:
+      - application/json
+      description: Updates details for an existing user.
+      parameters:
+      - description: User ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: User details to update
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/youGo_internal_api_request.UpdateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'User updated successfully"    // Corrected: domain. prefix'
+          schema:
+            $ref: '#/definitions/youGo_internal_api_response.UserResponse'
+        "400":
+          description: 'Invalid input data or User ID format" // Corrected: domain.
+            prefix'
+          schema:
+            $ref: '#/definitions/youGo_internal_api_response.ErrorResponse'
+        "404":
+          description: 'User not found"              // Corrected: domain. prefix'
+          schema:
+            $ref: '#/definitions/youGo_internal_api_response.ErrorResponse'
+        "500":
+          description: 'Internal server error"       // Corrected: domain. prefix'
+          schema:
+            $ref: '#/definitions/youGo_internal_api_response.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update a user
+      tags:
+      - Users
+schemes:
+- http
+- https
+swagger: "2.0"

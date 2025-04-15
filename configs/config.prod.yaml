@@ -1,0 +1,18 @@
+# configs/config.prod.yaml
+
+server:
+  port: "8080" # Use string if loading port as string in Go struct
+  cors_allowed_origins: [] # Or omit this field
+
+auth:
+  access_token_duration: "1h"
+  refresh_token_duration: "168h"
+
+log:
+  level: "info" # Example prod log level
+  format: "json" # Example prod log format
+
+app:
+  env: "production" # Example
+
+# ... other configs ...

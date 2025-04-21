@@ -50,7 +50,7 @@ services:
       - db_data:/var/lib/postgresql/data
     healthcheck:
       # Corrected DB name, use variables read from .env
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}" ]
       interval: 5s
       timeout: 5s
       retries: 5

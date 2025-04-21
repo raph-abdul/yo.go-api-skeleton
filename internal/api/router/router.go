@@ -16,13 +16,7 @@ import (
 
 	_ "youGo/docs"
 
-	// Internal dependencies (handlers, middleware)
-	handler "youGo/internal/api/handler"
-	// Import other handlers as needed (e.g., producthandler)
-	// producthandler "youGo/internal/api/handlers/product"
-	// Assuming middleware types or constants might be needed
-	// You might not need to import middleware package directly if only using instances
-	// apimiddleware "/internal/api/middleware"
+	"youGo/internal/api/handler"
 )
 
 // Dependencies holds the required components for setting up routes.

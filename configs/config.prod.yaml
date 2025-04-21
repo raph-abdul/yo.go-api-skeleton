@@ -2,7 +2,7 @@
 
 server:
   port: "8080" # Use string if loading port as string in Go struct
-  cors_allowed_origins: [] # Or omit this field
+  cors_allowed_origins: [ ] # Or omit this field
 
 auth:
   access_token_duration: "1h"

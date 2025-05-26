@@ -1,4 +1,4 @@
-# YouGo: Golang API Skeleton
+# HueGo: Golang API Skeleton
 
 ---
 ![golang-docker](./images/golang-docker.png)

@@ -1,4 +1,4 @@
-# YooGo: "Golang API with Docker integration" 
+# YooGo: Golang API with Docker integration 
 
 > Ready-to-use API starter project for building REST APIs with `Golang and Echo framework`. This project provides a
 > foundation demonstrating a layered architecture and integration with common tools and technologies.

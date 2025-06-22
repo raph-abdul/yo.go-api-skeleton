@@ -3,6 +3,8 @@
 > Ready-to-use API starter project for building REST APIs with `Golang and Echo framework`. This project provides a
 > foundation demonstrating a layered architecture and integration with common tools and technologies.
 
+![Swagger](./images/swagger.png)
+
 ## 🔧 Technology Stack
 
 |                        |                                                      |
@@ -92,8 +94,6 @@ Needed regardless of whether you use Docker or not.
 
 - API: `http://localhost:8080`
 - Swagger UI: `http://localhost:8080/swagger/index.html`
-
-![Swagger](./images/swagger.png)
 
 ## 3. Development Workflow with Docker
 

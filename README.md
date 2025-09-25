@@ -1,4 +1,4 @@
-# YooGo: Golang API with Docker integration 
+# yo.go-api-skeleton: Golang API Ready-To-Use with Docker integration 
 
 > Ready-to-use API starter project for building REST APIs with `Golang and Echo framework`. This project provides a
 > foundation demonstrating a layered architecture and integration with common tools and technologies.
@@ -28,7 +28,7 @@ Needed regardless of whether you use Docker or not.
 1. **Clone the repository:**
 
 ```bash
-    git clone https://github.com/raph-abdul/youGo
+    git clone https://github.com/raph-abdul/yo.go-api-skeleton
     cd youGo
 ```
 

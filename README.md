@@ -1,4 +1,4 @@
-# YO.GO-API-SKELETON: Golang API ready-to-use with DOCKER integration. INCLUDES USER AUTHENTICATION 🤯
+# YO.GO-API-SKELETON: GOLANG API ready-to-use with DOCKER integration. INCLUDES USER AUTHENTICATION 🤯
 
 > Ready-to-use API starter project for building REST APIs with `Golang and Echo framework`. This project provides a
 > foundation demonstrating a layered architecture and integration with common tools and technologies.

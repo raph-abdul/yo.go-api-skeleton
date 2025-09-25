@@ -27,7 +27,7 @@ Needed regardless of whether you use Docker or not.
 
 ```bash
     git clone https://github.com/raph-abdul/yo.go-api-skeleton
-    cd youGo
+    cd yo.go-api-skeleton
 ```
 
 2. **Configure Environment File:**
